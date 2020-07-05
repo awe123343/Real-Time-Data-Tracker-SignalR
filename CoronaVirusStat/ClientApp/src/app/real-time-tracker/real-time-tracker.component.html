@@ -1,0 +1,34 @@
+<div *ngIf='signalRService.data'>
+    <p-table #dt [columns]="cols" [value]="signalRService.data" [paginator]="true" [rows]="15">
+        <ng-template pTemplate="caption">
+            <h4>Corona Virus Tracker</h4>
+            <div style="text-align: right;">        
+                <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                    {{col.header}}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+            </tr>
+            <tr>
+                <th>USA</th>
+                <th>All</th>
+                <th>{{getPropertySum('infectedNo')}}</th>
+                <th>{{getPropertySum('recoveredNo')}}</th>
+                <th>{{getPropertySum('deathNo')}}</th>
+                <th>{{getLastUpdateTime() | date: 'MMM dd, y, HH:mm:ss'}}</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr [pSelectableRow]="rowData">
+                <td *ngFor="let col of columns" [style.color]='getTextColor(col.field)'>
+                    {{col.field === 'signalTime' ? (rowData[col.field] | date: 'MMM dd, y, HH:mm:ss') : typeOf(rowData[col.field]) === 'number' ? (rowData[col.field] | number: '1.0-0') : rowData[col.field]}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
