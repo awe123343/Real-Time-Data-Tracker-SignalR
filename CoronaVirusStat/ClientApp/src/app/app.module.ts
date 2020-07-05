@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,12 +14,13 @@ import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { AdminDataPortalComponent } from './admin-data-portal/admin-data-portal.component';
-
-import { TableModule } from "primeng/table";
-import { DialogModule } from "primeng/dialog";
-import { ButtonModule } from "primeng/button";
-import { InputTextModule } from "primeng/inputtext";
 import { RealTimeTrackerComponent } from './real-time-tracker/real-time-tracker.component';
+
+import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
 
 @NgModule({
   declarations: [
@@ -36,11 +37,13 @@ import { RealTimeTrackerComponent } from './real-time-tracker/real-time-tracker.
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     ApiAuthorizationModule,
     TableModule,
     DialogModule,
     ButtonModule,
     InputTextModule,
+    MessageModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },

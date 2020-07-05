@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy, HostListener } from "@angular/core";
 import { SignalRService } from "../services/signal-r.service";
 import { TableCol } from "../_interfaces/table-col";
 import { InfectionStatModel } from "../_interfaces/infection-stat-model";
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { infectionDataValidator } from '../shared/infection-data.validator';
 
 const add = (a, b) =>  a + b;
 const max = (a, b) => (a > b ? a : b);
@@ -16,8 +18,9 @@ export class AdminDataPortalComponent implements OnInit {
   selectedRecord: InfectionStatModel;
   displayDialog: boolean;
   record: InfectionStatModel = {};
+  recordUpdateForm: FormGroup;
 
-  constructor(public signalRService: SignalRService) {}
+  constructor(public signalRService: SignalRService, private fb: FormBuilder) {}
 
   ngOnInit() {
     this.cols = [
@@ -35,6 +38,21 @@ export class AdminDataPortalComponent implements OnInit {
     this.signalRService.addTransferDataListener();
     this.signalRService.addBroadcastDataListener();
     // this.signalRService.initialRequest();
+
+    this.recordUpdateForm = this.fb.group(
+      {
+        infectedNo: new FormControl("", [
+          Validators.required,
+          Validators.min(0),
+        ]),
+        recoveredNo: new FormControl("", [
+          Validators.required,
+          Validators.min(0),
+        ]),
+        deathNo: new FormControl("", [Validators.required, Validators.min(0)]),
+      },
+      { validators: infectionDataValidator }
+    );
   }
 
   @HostListener("window:beforeunload")
@@ -42,8 +60,19 @@ export class AdminDataPortalComponent implements OnInit {
     // this.signalRService.stopConnection();
   }
 
+  get recordUpdateFormControls() {
+    return this.recordUpdateForm.controls;
+  }
+
   save() {
     let records = [...this.signalRService.data];
+
+    console.log('Type', this.recordUpdateFormControls['infectedNo'].value);
+
+    this.record.infectedNo = this.recordUpdateFormControls['infectedNo'].value;
+    this.record.recoveredNo = this.recordUpdateFormControls['recoveredNo'].value;
+    this.record.deathNo = this.recordUpdateFormControls['deathNo'].value;
+
     records[this.signalRService.data.indexOf(this.selectedRecord)] = this.record;
 
     this.signalRService.data = records;
@@ -59,6 +88,11 @@ export class AdminDataPortalComponent implements OnInit {
 
   onRowSelect(event) {
     this.record = this.cloneRecord(event.data);
+
+    this.recordUpdateFormControls['infectedNo'].setValue(this.record.infectedNo);
+    this.recordUpdateFormControls['recoveredNo'].setValue(this.record.recoveredNo);
+    this.recordUpdateFormControls['deathNo'].setValue(this.record.deathNo);
+
     this.displayDialog = true;
   }
 
@@ -75,12 +109,14 @@ export class AdminDataPortalComponent implements OnInit {
   }
 
   getPropertySum(prop: string): number {
-    let values: number[] = this.signalRService.data.map(row => row[prop]);
+    let values: number[] = this.signalRService.data.map((row) => row[prop]);
     return values.reduce(add);
   }
 
   getLastUpdateTime(): Date {
-    let dates: Date[] = this.signalRService.data.map(row => new Date(row.signalTime));
+    let dates: Date[] = this.signalRService.data.map(
+      (row) => new Date(row.signalTime)
+    );
     let resDate: Date = dates.reduce(max);
     return resDate;
   }

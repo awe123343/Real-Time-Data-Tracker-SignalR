@@ -34,43 +34,64 @@
     </p-table>
 </div>
 
-<p-dialog header="Car Details" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '300px'}">
-    <div class="p-grid ui-fluid" *ngIf="record">
-        <div class="p-col-4">
-            <label>Country</label>
+<p-dialog header="Car Details" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '400px'}">
+    <form [formGroup]="recordUpdateForm" (ngSubmit)="save()">
+        <div class="p-grid ui-fluid" *ngIf="record">
+            <div class="p-col-4">
+                <label>Country</label>
+            </div>
+            <div class="p-col-8">
+                <label for="country">{{record.country}}</label>
+            </div>
+            <div class="p-col-4">
+                <label>State</label>
+            </div>
+            <div class="p-col-8">
+                <label for="state">{{record.state}}</label>
+            </div>
+            <div class="p-col-4">
+                <label for="infectedNo">Infected</label>
+            </div>
+            <div class="p-col-8">
+                <input pInputText type='number' id='infectedNo' formControlName='infectedNo' />
+                <p-message severity="error"
+                    [text]="recordUpdateForm.controls['infectedNo'].errors['required'] ? 'Infected number is required' : recordUpdateForm.controls['infectedNo'].errors['min'] ? 'Infected number should not be negative' : ''"
+                    *ngIf="!recordUpdateForm.controls['infectedNo'].valid && (recordUpdateForm.controls['infectedNo'].dirty || recordUpdateForm.controls['infectedNo'].touched)">
+                </p-message>
+            </div>
+            <div class="p-col-4">
+                <label for="recoveredNo">Recovered</label>
+            </div>
+            <div class="p-col-8">
+                <input pInputText type='number' id='recoveredNo' formControlName='recoveredNo' />
+                <p-message severity="error"
+                    [text]="recordUpdateForm.controls['recoveredNo'].errors['required'] ? 'Recovered number is required' : recordUpdateForm.controls['recoveredNo'].errors['min'] ? 'Recovered number should not be negative' : ''"
+                    *ngIf="!recordUpdateForm.controls['recoveredNo'].valid && (recordUpdateForm.controls['recoveredNo'].dirty || recordUpdateForm.controls['recoveredNo'].touched)">
+                </p-message>
+            </div>
+            <div class="p-col-4">
+                <label for="deathNo">Death</label>
+            </div>
+            <div class="p-col-8">
+                <input pInputText type='number' id='deathNo' formControlName='deathNo' />
+                <p-message severity="error"
+                    [text]="recordUpdateForm.controls['deathNo'].errors['required'] ? 'Death number is required' : recordUpdateForm.controls['deathNo'].errors['min'] ? 'Death number should not be negative' : ''"
+                    *ngIf="!recordUpdateForm.controls['deathNo'].valid && (recordUpdateForm.controls['deathNo'].dirty || recordUpdateForm.controls['deathNo'].touched)">
+                </p-message>
+            </div>
+            <div class="p-col-12">
+                <p-message severity="error"
+                    text='Please make sure (Infected >= Recovered + Death)'
+                    *ngIf="recordUpdateForm.errors?.invalidInput && (recordUpdateForm.touched || recordUpdateForm.dirty)">
+                </p-message>
+            </div>
         </div>
-        <div class="p-col-8">
-            <label for="country">{{record.country}}</label>
-        </div>
-        <div class="p-col-4">
-            <label>State</label>
-        </div>
-        <div class="p-col-8">
-            <label for="state">{{record.state}}</label>
-        </div>
-        <div class="p-col-4">
-            <label for="infectedNo">Infected</label>
-        </div>
-        <div class="p-col-8">
-            <input pInputText type="number" id="infectedNo" [(ngModel)]="record.infectedNo" />
-        </div>
-        <div class="p-col-4">
-            <label for="recoveredNo">Recovered</label>
-        </div>
-        <div class="p-col-8">
-            <input pInputText type="number" id="recoveredNo" [(ngModel)]="record.recoveredNo" />
-        </div>
-        <div class="p-col-4">
-            <label for="deathNo">Death</label>
-        </div>
-        <div class="p-col-8">
-            <input pInputText type="number" id="deathNo" [(ngModel)]="record.deathNo" />
-        </div>
-    </div>
-    <p-footer>
-        <div class="ui-dialog-buttonpane ui-helper-clearfix">
-            <button type="button" pButton icon="pi pi-times" (click)="cancel()" label="Cancel"></button>
-            <button type="button" pButton icon="pi pi-check" (click)="save()" label="Save"></button>
-        </div>
-    </p-footer>
+        <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix dialog-btns">
+                <button type="button" pButton icon="pi pi-times" (click)="cancel()" label="Cancel" class="ui-button-secondary"></button>
+                <button type="submit" pButton icon="pi pi-check" [disabled]="!recordUpdateForm.valid" class="save-btn" label="Save"></button>
+            </div>
+        </p-footer>
+    </form>
+
 </p-dialog>

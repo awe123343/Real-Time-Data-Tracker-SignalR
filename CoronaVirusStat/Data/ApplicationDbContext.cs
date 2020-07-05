@@ -25,6 +25,12 @@ namespace CoronaVirusStat.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<InfectionStat>()
+                .Property(b => b.Country)
+                .IsRequired();
+            modelBuilder.Entity<InfectionStat>()
+                .Property(b => b.State)
+                .IsRequired();
+            modelBuilder.Entity<InfectionStat>()
                 .Property(b => b.InfectedNo)
                 .IsRequired();
             modelBuilder.Entity<InfectionStat>()
@@ -33,6 +39,11 @@ namespace CoronaVirusStat.Data
             modelBuilder.Entity<InfectionStat>()
                 .Property(b => b.DeathNo)
                 .IsRequired();
+            modelBuilder.Entity<InfectionStat>()
+                .Property(b => b.SignalTime)
+                .IsRequired();
+            modelBuilder.Entity<InfectionStat>()
+                .HasIndex(b => new { b.Country, b.State }).IsUnique();
         }
     }
 }

@@ -1,0 +1,8 @@
+.dialog-btns {
+    display: flex;
+    justify-content: center;
+}
+
+.save-btn {
+    margin-left: .25em;
+}
