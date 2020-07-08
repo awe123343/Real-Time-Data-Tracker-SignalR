@@ -4,6 +4,7 @@ import { TableCol } from "../_interfaces/table-col";
 import { InfectionStatModel } from "../_interfaces/infection-stat-model";
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { infectionDataValidator } from '../shared/infection-data.validator';
+import { AnimationRoute } from "../animations";
 
 const add = (a, b) =>  a + b;
 const max = (a, b) => (a > b ? a : b);
@@ -12,6 +13,7 @@ const max = (a, b) => (a > b ? a : b);
   selector: "app-admin-data-portal",
   templateUrl: "./admin-data-portal.component.html",
   styleUrls: ["./admin-data-portal.component.css"],
+  animations: [AnimationRoute]
 })
 export class AdminDataPortalComponent implements OnInit {
   cols: TableCol[];

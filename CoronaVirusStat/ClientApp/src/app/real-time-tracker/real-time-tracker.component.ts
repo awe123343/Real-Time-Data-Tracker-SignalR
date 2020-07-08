@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, HostListener } from "@angular/core";
 import { SignalRService } from "../services/signal-r.service";
 import { TableCol } from "../_interfaces/table-col";
+import { AnimationRoute } from "../animations";
 
 const add = (a, b) =>  a + b;
 const max = (a, b) => (a > b ? a : b);
@@ -9,6 +10,7 @@ const max = (a, b) => (a > b ? a : b);
   selector: "app-real-time-tracker",
   templateUrl: "./real-time-tracker.component.html",
   styleUrls: ["./real-time-tracker.component.css"],
+  animations: [AnimationRoute]
 })
 export class RealTimeTrackerComponent implements OnInit {
   cols: TableCol[];

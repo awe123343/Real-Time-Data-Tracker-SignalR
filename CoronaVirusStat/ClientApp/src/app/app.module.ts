@@ -47,9 +47,9 @@ import { MessageModule } from 'primeng/message';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
-      { path: 'realtimetracker', component: RealTimeTrackerComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
-      { path: 'admin-portal', component: AdminDataPortalComponent, canActivate: [AuthorizeGuard] },
+      { path: 'realtimetracker', component: RealTimeTrackerComponent, data: {animation: 'TrackerPage'} },
+      { path: 'admin-portal', component: AdminDataPortalComponent, canActivate: [AuthorizeGuard], data: {animation: 'AdminPage'} },
     ])
   ],
   providers: [
